@@ -12,10 +12,12 @@
     "ant-design-vue": "^3.2.5",
     "axios": "^0.27.2",
     "dayjs": "^1.11.3",
+    "pubsub-js": "^1.9.4",
     "vue": "^3.2.25",
     "vue-router": "^4.0.15"
   },
   "devDependencies": {
+    "@types/pubsub-js": "^1.8.3",
     "@vitejs/plugin-vue": "^2.3.3",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.14",

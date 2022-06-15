@@ -9,7 +9,7 @@ export default defineConfig({
 
     proxy: {
       '/api': {
-        target: 'http://localhost:8088/',
+        target: 'http://192.168.1.166:8088/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '') // 不可以省略rewrite
       }

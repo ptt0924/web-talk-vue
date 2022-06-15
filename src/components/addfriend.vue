@@ -1,5 +1,12 @@
 <template>
-    <div>chenliang</div>
+    <div><div>
+      <a-input-search
+          v-model:value="value"
+          placeholder="input search text"
+          style="width: 200px"
+          @search="onSearch"
+      />
+    </div></div>
 </template>
 <script lang="ts" setup>
 import axios from 'axios';
@@ -32,7 +39,7 @@ const findAccount = () => {
 //发送添加信息
 const add = () => {
     let addRequest: any = new Mes('3', "请求添加", account, toAccount)
-    // addRequest.name = 
+    // addRequest.name =
     SocketService.ws.appointSend(addRequest)
 }
 //同意添加好友
