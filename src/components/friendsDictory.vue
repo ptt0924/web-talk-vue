@@ -9,7 +9,7 @@
                 <a href="https://www.antdv.com/">{{ item.title }}</a>
               </template>
               <template #avatar>
-                <a-avatar  @click.stop="clickCharacter(item.count)" src="https://joeschmoe.io/api/v1/random" />
+                <a-avatar  @click.stop="clickCharacter(index)"  src="https://joeschmoe.io/api/v1/random" />
               </template>
             </a-list-item-meta>
           </a-list-item>
@@ -20,7 +20,7 @@
       <div>
         <a-button type="primary">单聊</a-button>
         <a-button type="primary">群聊</a-button>
-        <a-button @clic="addFriend">添加好友</a-button>
+        <a-button type="primary" @click="addFriend">添加好友</a-button>
       </div>
       <div></div>
     </div>
@@ -35,7 +35,7 @@
                     <a>{{ item.title }}</a>
                   </template>
                   <template #avatar>
-                    <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                    <a-avatar  @click.stop="clickCharacter(index)"  src="https://joeschmoe.io/api/v1/random" />
                   </template>
                 </a-list-item-meta>
               </a-list-item>
@@ -68,7 +68,7 @@ let account: any = useRoute().query.account
 //   toAccount: string
 // }
 const data: DataItem[] = reactive([])
-const messageList=reactive([]);
+let messageList=reactive([]);
 let frinedsAcount:any=reactive([])
 //点击进入好友的信息页面
 const handle = (t: any) => {
@@ -76,9 +76,9 @@ const handle = (t: any) => {
   router.push({ name: "detailsView", params: { userName: data[t].title, account: data[t].friendAccount } });
 };
 
-const clickCharacter=(count:any)=>{
-  console.log(count);
-  router.push({ name: "charcterDetail",params:{count:count} })
+const clickCharacter=(t:any)=>{
+  // console.log(count);
+  router.push({ name: "charcterDetail" , params: { userName: data[t].title, account: data[t].friendAccount }})
 }
 
 //挂载的时候提前获取到好友列表和群聊列表  以及一些历史信息
@@ -119,7 +119,7 @@ onMounted(() => {
       'account': account
     }
   }).then((res) => {
-    messageList.value=res.data;
+    messageList=res.data;
     console.log('res',messageList,'111',account)
     console.log("消息列表", res)
 
