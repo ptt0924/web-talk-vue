@@ -45,7 +45,6 @@ const register = () => {
   })
 }
 const openDictory = () => {
-
   axios({
     url: 'api/login',
     method: 'get',

@@ -73,29 +73,42 @@ export default class Socket {
 
     onMessage = (result) => {
         const data = result.data
-        // if (/ping|pong/i.test(data)) return
         console.log("result", result.data)
-        var json = result.data
+        var json = JSON.parse(result.data)
         //0单聊 1群聊 2服务器发送的 3加好友 4发图片 5发文件
         if (json.code === '0') {
+            console.log("1")
             var map = SocketService.friendMessageMap[json.fromAccount + '']
             //未读消息加1
             map.count = map.count + 1
             //消息列表加1
-            list = map.messageList
+            let list = map.messageList
             let m = new Object
             m.fromAccount = json.fromAccount
             m.toAccount = json.toAccount
             m.sendTime = json.date
             m.text = json.mes
-            list.put(m)
+            list.push(m)
             console.log(WebsocketService.friendMessageMap[json.fromAccount + ''])
         } else if (json.code === '1') {
 
         } else if (json.code === '2') {
 
-        } else if (json.code === "8") {
+        } else if (json.code === '3') { //添加好友
+
+        } else if (json.code === '4') {  //得到别人上线的消息
+            //先获取以前的在线好友
+            let onlineAccount = WebsocketService.onlineFriend
+            onlineAccount.push(json.account)
+            console.log("onmessage中的新增在线好友", WebsocketService.onlineFriend)
+        } else if (json.code === '9') {
+
+        }
+        else {
             console.log("获取在线好友列表")
+            // var j = JSON.parse(json)
+            WebsocketService.onlineFriend = json.onlineAccount
+            console.log("onlineAccount", WebsocketService.onlineFriend)
         }
         const normalizedData = data;
         // this.handleCallback(normalizedData)
