@@ -61,7 +61,7 @@ const openDictory = () => {
     else if (data.code === '1') {
       alert("密码错误")
     } else {
-      var url = "ws://localhost:8088/chat/" + account.value + "," + password.value;
+      var url = "ws://192.168.1.166:8088/chat/" + account.value + "," + password.value;
       var socket = new Socket(url)
       console.log(socket)
       SocketService.ws = socket

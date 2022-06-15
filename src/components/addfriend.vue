@@ -1,5 +1,12 @@
 <template>
-    <div>chenliangsb</div>
+    <div><div>
+      <a-input-search
+          v-model:value="value"
+          placeholder="input search text"
+          style="width: 200px"
+          @search="onSearch"
+      />
+    </div></div>
 </template>
 <script lang="ts" setup>
 import axios from 'axios';

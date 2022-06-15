@@ -2,7 +2,7 @@ import Heartbeat from './heartbeat'
 import PollingRollback from './pollingRollback'
 import WebsocketService from './global.js'
 import SocketService from './global.js'
-import { message } from 'ant-design-vue'
+import pubsub from 'pubsub-js'
 
 
 export default class Socket {
@@ -73,23 +73,26 @@ export default class Socket {
 
     onMessage = (result) => {
         const data = result.data
-        console.log("result", result.data)
+        // if (/ping|pong/i.test(data)) return
         var json = JSON.parse(result.data)
         //0单聊 1群聊 2服务器发送的 3加好友 4发图片 5发文件
+        console.log('boo',json.code==='0')
         if (json.code === '0') {
-            console.log("1")
             var map = SocketService.friendMessageMap[json.fromAccount + '']
             //未读消息加1
             map.count = map.count + 1
             //消息列表加1
-            let list = map.messageList
+          let  list = map.messageList
             let m = new Object
             m.fromAccount = json.fromAccount
             m.toAccount = json.toAccount
             m.sendTime = json.date
             m.text = json.mes
             list.push(m)
-            console.log(WebsocketService.friendMessageMap[json.fromAccount + ''])
+            console.log('11111')
+            console.log('11111',SocketService.friendMessageMap)
+            console.log("result", json)
+            pubsub.publish('mes',json)
         } else if (json.code === '1') {
 
         } else if (json.code === '2') {

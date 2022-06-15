@@ -9,7 +9,7 @@
                 <a href="https://www.antdv.com/">{{ item.title }}</a>
               </template>
               <template #avatar>
-                <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                <a-avatar  @click.stop="clickCharacter(item.count)" src="https://joeschmoe.io/api/v1/random" />
               </template>
             </a-list-item-meta>
           </a-list-item>
@@ -20,6 +20,7 @@
       <div>
         <a-button type="primary">单聊</a-button>
         <a-button type="primary">群聊</a-button>
+        <a-button @clic="addFriend">添加好友</a-button>
       </div>
       <div></div>
     </div>
@@ -53,7 +54,7 @@
 <script setup lang="ts" >
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive ,ref } from "vue";
 import router from "../router";
 import SocketService from './global.js'
 import DataItem from './classOrInterface/interface.js'
@@ -67,12 +68,19 @@ let account: any = useRoute().query.account
 //   toAccount: string
 // }
 const data: DataItem[] = reactive([])
-
+const messageList=reactive([]);
+let frinedsAcount:any=reactive([])
 //点击进入好友的信息页面
 const handle = (t: any) => {
-  console.log(t)
+  // console.log(data[t].title)
   router.push({ name: "detailsView", params: { userName: data[t].title, account: data[t].friendAccount } });
 };
+
+const clickCharacter=(count:any)=>{
+  console.log(count);
+  router.push({ name: "charcterDetail",params:{count:count} })
+}
+
 //挂载的时候提前获取到好友列表和群聊列表  以及一些历史信息
 onMounted(() => {
   axios({
@@ -99,6 +107,7 @@ onMounted(() => {
       console.log('obj', obj)
       data.push(obj)
     }
+    frinedsAcount=data;
     //放回全局实例中
     SocketService.friendList = data
   })
@@ -110,7 +119,10 @@ onMounted(() => {
       'account': account
     }
   }).then((res) => {
+    messageList.value=res.data;
+    console.log('res',messageList,'111',account)
     console.log("消息列表", res)
+
     SocketService.friendMessageMap = res.data
   })
 })

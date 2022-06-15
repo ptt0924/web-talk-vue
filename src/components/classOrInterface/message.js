@@ -1,4 +1,4 @@
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 export default class Mes {
     constructor(code, mes, fromAccount, toAccount) {
         this.code = code

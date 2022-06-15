@@ -26,6 +26,23 @@ const routes: Array<RouteRecordRaw> = [{
     path: '/addFriend',
     component: () => import('../components/addfriend.vue')
 },
+    {
+        name:'charcterDetail',
+        path: '/characterDetail',
+        component: () => import('../components/characterDetail.vue'),
+        children:[
+            {
+                name:'lookingDetail',
+                path: '/lookingDetail',
+                component: () => import('../components/lookingDetail.vue'),
+            },
+            {
+                name:'changeCharacter',
+                path: '/changeCharacter',
+                component: () => import('../components/changeCharacter.vue'),
+            }
+        ]
+    },
 ]
 
 
