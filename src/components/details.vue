@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { message } from 'ant-design-vue';
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router';
 import SocketService from './global.js'
 import Mes from './classOrInterface/message.js'
@@ -44,6 +44,17 @@ const myAccount = SocketService.account
 const sendMessage = () => {
   let mes = new Mes('0', value.value, myAccount, account.value)
   console.log("发送信息" + mes)
+  console.log("ws:", SocketService.friendMessageMap)
+  // let friendMessageMap: any = reactive([]);
+  let friendMessageMap = SocketService.friendMessageMap['34'].messageList
+  console.log("map", friendMessageMap)
+  const temp = {
+    fromAccount: myAccount,
+    text: mes.mes,
+    toAccount: account.value,
+    sendTime: new Date(),
+  }
+  friendMessageMap.push(temp);
   ws.appointSend(mes)
   value.value = ''
 }

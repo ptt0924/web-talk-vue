@@ -5,6 +5,6 @@ export default class Mes {
         this.mes = mes
         this.fromAccount = fromAccount
         this.toAccount = toAccount
-        this.date = dayjs(new Date()).format('YYYY:MM:DD HH:mm:ss')
+        this.date = dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
     }
 } 
