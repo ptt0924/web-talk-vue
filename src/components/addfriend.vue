@@ -1,5 +1,5 @@
 <template>
-    <div>chenliangsb</div>
+    <div>chenliang</div>
 </template>
 <script lang="ts" setup>
 import axios from 'axios';
@@ -31,8 +31,13 @@ const findAccount = () => {
 }
 //发送添加信息
 const add = () => {
-    let addRequest: any = new Mes(3, "请求添加", account, toAccount)
+    let addRequest: any = new Mes('3', "请求添加", account, toAccount)
+    // addRequest.name = 
     SocketService.ws.appointSend(addRequest)
+}
+//同意添加好友
+const aggree = () => {
+
 }
 //挂载的时候就获取得到以前的添加好友的消息
 onMounted(() => {
@@ -44,7 +49,7 @@ onMounted(() => {
         }
     }).then((res) => {
         console.log("得到添加好友信息的列表", res.data)
-
+        //这里得到好友请求的消息
     })
 })
 </script>

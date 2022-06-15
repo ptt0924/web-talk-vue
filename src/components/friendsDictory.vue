@@ -113,6 +113,9 @@ onMounted(() => {
     console.log("消息列表", res)
     SocketService.friendMessageMap = res.data
   })
+  // axios({
+  //   url: 'api/user'
+  // })
 })
 
 //跳转页面

@@ -77,7 +77,7 @@ export default class Socket {
         var json = JSON.parse(result.data)
         //0单聊 1群聊 2服务器发送的 3加好友 4发图片 5发文件
         if (json.code === '0') {
-            console.log("1")
+            // console.log("1")
             var map = SocketService.friendMessageMap[json.fromAccount + '']
             //未读消息加1
             map.count = map.count + 1
@@ -104,9 +104,8 @@ export default class Socket {
         } else if (json.code === '9') {
 
         }
-        else {
+        else if (json.code === '8') {
             console.log("获取在线好友列表")
-            // var j = JSON.parse(json)
             WebsocketService.onlineFriend = json.onlineAccount
             console.log("onlineAccount", WebsocketService.onlineFriend)
         }
@@ -114,14 +113,14 @@ export default class Socket {
         // this.handleCallback(normalizedData)
     }
 
-    handleCallback = (data) => {
-        const id = data.id;
-        if (!id) return;
+    // handleCallback = (data) => {
+    //     const id = data.id;
+    //     if (!id) return;
 
-        if (this.subscriptionMap[id]) {
-            this.subscriptionMap[id]["callback"] && this.subscriptionMap[id]["callback"](data);
-        }
-    }
+    //     if (this.subscriptionMap[id]) {
+    //         this.subscriptionMap[id]["callback"] && this.subscriptionMap[id]["callback"](data);
+    //     }
+    // }
 
     onClose = (result) => {
         console.warn(`【Websocket is closed】`)
