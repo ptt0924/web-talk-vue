@@ -9,7 +9,7 @@
           />
         </template>
         <template #actions>
-          <div @click="changeCharacter">
+          <div v-if="isMine()" @click="changeCharacter">
             修改
             <edit-outlined key="edit" />
           </div>
@@ -17,9 +17,9 @@
             详情
             <ellipsis-outlined key="ellipsis" />
           </div>
-          <div @click="openLooking">
-            添加
-            <ellipsis-outlined key="add" />
+          <div @click="returnBack">
+            返回
+            <arrow-left-outlined />
           </div>
         </template>
         <a-card-meta title="Card title" description="This is the description">
@@ -34,14 +34,30 @@
 
 </template>
 <script lang="ts" setup>
-import {  EditOutlined, EllipsisOutlined } from '@ant-design/icons-vue';
-import { useRouter } from "vue-router";
+import {  EditOutlined, EllipsisOutlined,ArrowLeftOutlined,PlusOutlined } from '@ant-design/icons-vue';
+import { useRouter,useRoute } from "vue-router";
+import {ref} from 'vue'
+import SocketService from "./global.js"
 const router = useRouter();
+const route=useRoute();
 const openLooking=()=>{
   router.push({name:'lookingDetail'})
 }
+console.log(route.params.account)
+console.log(SocketService.account)
+const isMine=()=>{
+  console.log(route.params.account)
+  console.log(SocketService.account)
+  if(route.params.account==SocketService.account){
+    return true;
+  }
+  return false;
+}
 const changeCharacter=()=>{
   router.push({name:'changeCharacter'})
+}
+const returnBack=()=>{
+  router.push({name:'friendsDictory', query: { account: SocketService.account }})
 }
 </script>
 <style>
