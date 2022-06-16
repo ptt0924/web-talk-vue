@@ -1,15 +1,15 @@
 <template>
   <div class="friendsDictory">
     <div class="head">
-      <a-list item-layout="horizontal" :data-source="data">
+      <a-list item-layout="horizontal" :data-source="myMessage">
         <template #renderItem="{ item, index }">
-          <a-list-item @click="handle(index)">
+          <a-list-item >
             <a-list-item-meta>
               <template #title>
-                <a href="https://www.antdv.com/">{{ item.title }}</a>
+                <div>{{ item.title }}</div>
               </template>
               <template #avatar>
-                <a-avatar @click.stop="clickCharacter(index)" src="https://joeschmoe.io/api/v1/random" />
+                <a-avatar @click.stop="clickCharacter(index,'me')" src="https://joeschmoe.io/api/v1/random" />
               </template>
             </a-list-item-meta>
           </a-list-item>
@@ -35,7 +35,7 @@
                     <a>{{ item.title }}</a>
                   </template>
                   <template #avatar>
-                    <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                    <a-avatar  @click.stop="clickCharacter(index,'other')" src="https://joeschmoe.io/api/v1/random" />
                   </template>
                 </a-list-item-meta>
               </a-list-item>
@@ -71,7 +71,6 @@ let password: any = useRoute().query.password
 //   description?: string
 //   toAccount: string
 // }
-console.log("zhanghao", account)
 const data: DataItem[] = reactive([])
 let messageList = reactive([]);
 let frinedsAcount: any = reactive([])
@@ -81,17 +80,21 @@ const handle = (t: any) => {
   router.push({ name: "detailsView", params: { userName: data[t].title, account: data[t].friendAccount } });
 };
 
-
-const clickCharacter = (t: any) => {
+const clickCharacter = (t: any,operation:string) => {
   // console.log(count);
-  router.push({ name: "charcterDetail", params: { userName: data[t].title, account: data[t].friendAccount } })
+  if(operation==='me'){
+    router.push({ name: "charcterDetail", params: { userName:myMessage[0].title, account:myMessage[0].userAccount } })
+  }
+  else {
+    router.push({name: "charcterDetail", params: {userName: data[t].title, account: data[t].friendAccount}})
+  }
 }
 
 //挂载的时候提前获取到好友列表和群聊列表  以及一些历史信息
 onMounted(() => {
   // var url = "ws://192.168.1.166:8088/chat/" + account + "," + password;
   // var socket = new Socket(url)
-  // console.log(socket)
+  // console.log(socket)1
   // SocketService.ws = socket
   //得到好友列表  参数:自己的account
   axios({
@@ -143,8 +146,19 @@ onMounted(() => {
     params: {
       'account': account
     }
-  }).then((res) => {
-    console.log("自己的用户信息", res.data)
+  }).then((res:any) => {
+    console.log('自己的信息',res)
+    const obj: DataItem = {
+      title: '',
+      friendAccount: '',
+      userAccount: '',
+      readTime: '',
+      time: ''
+    }
+    obj.title = res.data.name
+    obj.userAccount=res.data.account;
+    myMessage.push(obj)
+    console.log('mine',myMessage)
     SocketService.myMessage = res.data
   })
 

@@ -5,60 +5,92 @@
         <h1 v-if="!isRegisterView">登录</h1>
         <h1 v-else>注册</h1>
         <div v-if="!isRegisterView">
-          <a-form :model="loginState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 9 }"
-            autocomplete="off" @finish="openDictory" @finishFailed="onFinishFailed">
-            <div class="inputItem">
-              <a-form-item label="账户" name="account" :rules="[{ required: true, message: '请输入账户!' }]">
-                <a-input v-model:value="loginState.account" />
-              </a-form-item>
-            </div>
+        <a-form
+            :model="loginState"
+            name="basic"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 9 }"
+            autocomplete="off"
+            @finish="openDictory"
+            @finishFailed="onFinishFailed"
+        >
+          <div class="inputItem">
+          <a-form-item
+              label="账户"
+              name="account"
+              :rules="[{ required: true, message: '请输入账户!' }]"
+          >
+            <a-input placeholder="请输入账户"  v-model:value="loginState.account" />
+          </a-form-item>
+          </div>
 
-            <div class="inputItem">
-              <a-form-item label="密码" name="password" :rules="[{ required: true, message: '请输入密码' }]">
-                <a-input-password v-model:value="loginState.password" />
-              </a-form-item>
-            </div>
-            <div>
-              <a-form-item :wrapper-col="{ offset: 8, span: 9 }">
-                <a-button block type="primary" html-type="submit">确定</a-button>
-              </a-form-item>
-            </div>
-            <div>
-              <a-form-item :wrapper-col="{ offset: 8, span: 9 }">
-                <a-button block @click="openRegisterForm">注册</a-button>
-              </a-form-item>
-            </div>
-          </a-form>
+          <div class="inputItem">
+          <a-form-item
+              label="密码"
+              name="password"
+              :rules="[{ required: true, message: '请输入密码' }]"
+          >
+            <a-input-password placeholder="请输入密码" v-model:value="loginState.password" />
+          </a-form-item>
+          </div>
+          <div >
+          <a-form-item :wrapper-col="{ offset: 8, span: 9 }">
+            <a-button block type="primary" html-type="submit">确定</a-button>
+          </a-form-item>
+          </div>
+          <div>
+            <a-form-item :wrapper-col="{ offset: 8, span: 9 }">
+              <a-button block @click="openRegisterForm">注册</a-button>
+            </a-form-item>
+          </div>
+        </a-form>
         </div>
-        <div v-else>
-          <a-form :model="registerState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 9 }"
-            autocomplete="off" @finish="sureRegister" @finishFailed="onFinishFailed">
-            <div class="inputItem">
-              <a-form-item label="用户名" name="name" :rules="[{ required: true, message: '请输入账户!' }]">
-                <a-input v-model:value="registerState.name" />
-              </a-form-item>
-            </div>
+        <div v-else> <a-form
+            :model="registerState"
+            name="basic"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 9 }"
+            autocomplete="off"
+            @finish="sureRegister"
+            @finishFailed="onFinishFailed"
+        >
+          <div class="inputItem">
+            <a-form-item
+                label="用户名"
+                name="name"
+                :rules="[{ required: true, message: '请输入用户名!' }]"
+            >
+              <a-input  placeholder="请输入用户名" v-model:value="registerState.name" />
+            </a-form-item>
+          </div>
 
-            <div class="inputItem">
-              <a-input v-model:value="account" placeholder="用户名"></a-input>
-            </div>
-            <div class="inputItem">
-              <a-form-item label="密码" name="password" :rules="[{ required: true, message: '请输入密码' }]">
-                <a-input-password v-model:value="registerState.password" />
-              </a-form-item>
-            </div>
-            <div>
-              <a-form-item :wrapper-col="{ offset: 8, span: 9 }">
-                <a-button block type="primary" html-type="submit">确定</a-button>
-              </a-form-item>
-            </div>
-            <div>
-              <a-form-item :wrapper-col="{ offset: 8, span: 9 }">
-                <a-button block @click="changeState">返回</a-button>
-              </a-form-item>
-            </div>
-          </a-form>
-        </div>
+          <div class="inputItem">
+            <a-form-item   label="账户"
+                           name="account"
+                           :rules="[{ required: true, message: '请输入账户!' }]" >
+            <a-input v-model:value="registerState.account" placeholder="账户"></a-input>
+            </a-form-item>
+          </div>
+          <div class="inputItem">
+            <a-form-item
+                label="密码"
+                name="password"
+                :rules="[{ required: true, message: '请输入密码' }]"
+            >
+              <a-input-password placeholder="请输入密码" v-model:value="registerState.password" />
+            </a-form-item>
+          </div>
+          <div >
+            <a-form-item :wrapper-col="{ offset: 8, span: 9 }">
+              <a-button block type="primary" html-type="submit">确定</a-button>
+            </a-form-item>
+          </div>
+          <div>
+            <a-form-item :wrapper-col="{ offset: 8, span: 9 }">
+              <a-button block @click="changeState">返回</a-button>
+            </a-form-item>
+          </div>
+        </a-form></div>
       </div>
     </div>
   </div>
@@ -147,13 +179,13 @@ const openDictory = (values: any) => {
     else if (data.code === '1') {
       alert("密码错误")
     } else {
-      var url = "ws://192.168.1.166:8088/chat/" + loginState.account + "," + loginState.password;
+      var url = "ws://192.168.1.166:8088/chat/" + loginState.account+ "," + loginState.account;
       var socket = new Socket(url)
       console.log(socket)
       SocketService.ws = socket
       SocketService.account = loginState.account
       SocketService.password = password.value
-      router.push({ name: "friendsDictory", query: { account: loginState.account, password: loginState.password } });
+      router.push({ name: "friendsDictory", query: { account: loginState.account, password:loginState.account} });
     }
   })
 };
