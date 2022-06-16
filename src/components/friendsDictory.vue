@@ -161,6 +161,24 @@ const viewFriendMessage = () => {
     //res.data里面返回好友的信息
   })
 }
+
+const updateUser = () => {
+  axios({
+    url: 'api/user',
+    method: 'put',
+    params: {
+      'user': '用户实体'
+    }
+  }).then((res) => {
+    let data = JSON.parse(res.data)
+    if (data.code === '0') {
+      alert("修改成功")
+    } else {
+      alert("修改失败")
+    }
+
+  })
+}
 //修改好友的备注
 const updateFriendRemark = () => {
   axios({

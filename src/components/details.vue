@@ -96,7 +96,7 @@ const sendMessage = () => {
     sendTime: new Date(),
   }
   friendMessageMap.push(temp);
-  console.log(SocketService.friendMessageMap)
+  console.log("单发消息信息列表", SocketService.friendMessageMap)
 }
 const userName: any = ref('')
 userName.value = route.params.userName
