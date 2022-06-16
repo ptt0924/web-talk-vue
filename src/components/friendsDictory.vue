@@ -71,14 +71,12 @@ let password: any = useRoute().query.password
 //   description?: string
 //   toAccount: string
 // }
+console.log("zhanghao", account)
 const data: DataItem[] = reactive([])
 let messageList = reactive([]);
 let frinedsAcount: any = reactive([])
 //点击进入好友的信息页面
 const handle = (t: any) => {
-  //请求是否在线
-  //todo
-  SocketService.ws.appointSend()
   // console.log(data[t].title)
   router.push({ name: "detailsView", params: { userName: data[t].title, account: data[t].friendAccount } });
 };
@@ -162,16 +160,25 @@ const viewFriendMessage = () => {
   }).then((res) => {
     //res.data里面返回好友的信息
   })
-  //同时得到备注
+}
+//修改好友的备注
+const updateFriendRemark = () => {
   axios({
     url: 'api/friends',
-    method: 'get',
+    method: 'put',
     params: {
       'fromAccount': '自己的账号',
-      'toAccount': '好友的账号'
+      'toAccount': '好友的账号',
+      'remark': '修改的备注'
     }
   }).then((res) => {
-    //res.data里面返回备注的信息
+    //修改成功，把备注修改为修改的
+    let data = res.data
+    if (data.code === '0') {
+      alert("修改成功")
+    } else {
+      alert("修改失败")
+    }
   })
 }
 //跳转添加页面

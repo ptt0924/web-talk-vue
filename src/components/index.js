@@ -94,17 +94,23 @@ export default class Socket {
             console.log('11111', SocketService.friendMessageMap)
             console.log("result", json)
             pubsub.publish('mes', json)
-        } else if (json.code === '1') {
-
+        } else if (json.code === '1') {//判断是否在线
+            if (json.mes === '0') {
+                //在线
+            } else {
+                //不在线
+            }
         } else if (json.code === '2') {//别人同意后 加入好友列表
-
+            let friend = new Object()
+            friend.userAccount = json.fromAccount
+            friend.friendAccount = json.toAccount
+            friend.remark = json.mes
+            SocketService.push(friend)
         } else if (json.code === '3') { //收到别人请求添加好友
+            //这里把好友请求加入请求好友列表里
+            //往这个里面添加好友请求SocketService.requetAdd
+        } else if (json.code === '4') {
 
-        } else if (json.code === '4') {  //得到别人上线的消息
-            //先获取以前的在线好友
-            // let onlineAccount = WebsocketService.onlineFriend
-            // onlineAccount.push(json.account)
-            // console.log("onmessage中的新增在线好友", WebsocketService.onlineFriend)
         } else if (json.code === '9') {
 
         }

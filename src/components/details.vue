@@ -60,9 +60,8 @@ console.log('1111', friendMessageMap)
 onMounted(() => {
   const pubId = pubsub.subscribe('mes', (msgName, data: any) => {
     //这里挂载的时候查看是否在线上  参数：自己的账号，好友的账号
-    let mes = new Mes("1", "是否在线", myAccount, account.value)
+    let mes = new Mes("1", "", myAccount, account.value)
     SocketService.ws.appointSend(mes)
-
     friendMessageMap.mes = SocketService.friendMessageMap[account.value].messageList
     // const temp:any=reactive([]);
     // const temp={

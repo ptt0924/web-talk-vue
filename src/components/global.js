@@ -9,8 +9,8 @@ export default class SocketService {
     static friendList
     //好友以及信息  得到好友的信息 account:message的map
     static friendMessageMap
-    //在线好友列表
-    static onlineFriend
     //自己的用户信息
     static myMessage
+    //好友请求列表
+    static requetAdd
 }
