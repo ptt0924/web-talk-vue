@@ -23,6 +23,7 @@
         <a-textarea @keyup.enter="sendMessage" v-model:value="value" placeholder="Basic usage" :rows="4" />
         <div class="flex">
           <a-button @click="sendMessage" type="primary">发送</a-button>
+          <a-button @click="returnBack">返回</a-button>
         </div>
       </div>
     </div>
@@ -33,11 +34,12 @@
 import pubsub from "pubsub-js";
 import { message } from 'ant-design-vue';
 import { onMounted, reactive, ref, watch } from 'vue'
-import { useRoute } from 'vue-router';
+import { useRoute ,useRouter} from 'vue-router';
 import SocketService from './global.js'
 import Mes from './classOrInterface/message.js'
 import WebsocketService from "./global";
 const route = useRoute();
+const router=useRouter()
 const value = ref('')
 //好友的账号
 const account: any = ref('')
@@ -47,7 +49,10 @@ const ws = SocketService.ws
 //自己的账号
 const myAccount = SocketService.account
 let friendMessageMap: any = reactive([]);
-friendMessageMap = SocketService.friendMessageMap[account.value].messageList
+
+
+  friendMessageMap = SocketService.friendMessageMap[account.value].messageList
+
 
 console.log('1111', friendMessageMap)
 
@@ -84,8 +89,10 @@ const isLeft = (i) => {
   }
   else return false;
 }
+const reverseMap= SocketService.friendMessageMap[account.value].messageList
+
 //单发消息
-const sendMessage = () => {
+const sendMessage= () => {
   let mes = new Mes('0', value.value, myAccount, account.value)
   console.log("发送信息" + mes)
   ws.appointSend(mes)
@@ -96,8 +103,13 @@ const sendMessage = () => {
     toAccount: account.value,
     sendTime: new Date(),
   }
-  friendMessageMap.push(temp);
+  friendMessageMap.unshift(temp);
+  friendMessageMap = SocketService.friendMessageMap[account.value].messageList
   console.log(SocketService.friendMessageMap)
+}
+
+const returnBack=()=>{
+  router.push({name:'friendsDictory',query: { account: SocketService.account }})
 }
 const userName: any = ref('')
 userName.value = route.params.userName
