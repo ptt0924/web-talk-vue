@@ -42,15 +42,18 @@ import pubsub from "pubsub-js";
 const router = useRouter();
 const route=useRoute();
 const openLooking=()=>{
-  router.push({name:'lookingDetail' ,params: { userName:userName, account: account }})
+  router.push({name:'lookingDetail' ,params: { userName:userName.value, account: account }})
 }
 onMounted(()=>{
-  // const pId=pubsub.subscribe(())
+  const pId=pubsub.subscribe(('userName'),(_,data)=>{
+    userName.value=data
+  })
 })
 
 console.log(route.params.userName)
 console.log(SocketService.account)
-let userName:any=route.params.userName
+let userName:any=ref('')
+userName.value=route.params.userName
 const account=route.params.account
 console.log(account)
 const isMine=()=>{
@@ -63,7 +66,7 @@ const isMine=()=>{
 }
 const changeCharacter=()=>{
   const tempIsMine=isMine()
-  router.push({name:'changeCharacter',params:{isMine:isMine(),account:account,userName:userName}})
+  router.push({name:'changeCharacter',params:{isMine:isMine(),account:account,userName:userName.value}})
 }
 const returnBack=()=>{
   router.push({name:'friendsDictory', query: { account: SocketService.account }})
