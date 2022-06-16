@@ -13,4 +13,5 @@ export default class SocketService {
     static onlineFriend
     //自己的用户信息
     static myMessage
+    static id
 }

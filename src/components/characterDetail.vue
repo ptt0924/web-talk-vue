@@ -34,15 +34,20 @@
 
 </template>
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {  EditOutlined, EllipsisOutlined,ArrowLeftOutlined } from '@ant-design/icons-vue';
 import { useRouter,useRoute } from "vue-router";
 import SocketService from "./global.js"
+import pubsub from "pubsub-js";
 const router = useRouter();
 const route=useRoute();
 const openLooking=()=>{
   router.push({name:'lookingDetail' ,params: { userName:userName, account: account }})
 }
+onMounted(()=>{
+  // const pId=pubsub.subscribe(())
+})
+
 console.log(route.params.userName)
 console.log(SocketService.account)
 let userName:any=route.params.userName

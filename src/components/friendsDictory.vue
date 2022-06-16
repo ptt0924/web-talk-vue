@@ -115,13 +115,15 @@ onMounted(() => {
         friendAccount: '',
         userAccount: '',
         readTime: '',
-        time: ''
+        time: '',
+        id:''
       }
       obj.title = res.data[i].remark
       obj.friendAccount = res.data[i].friendAccount
       obj.userAccount = res.data[i].userAccount
       obj.readTime = res.data[i].readTime
       obj.time = res.data[i].time
+      obj.id=res.data[i].id
       console.log('obj', obj)
       data.push(obj)
     }
@@ -157,13 +159,15 @@ onMounted(() => {
       friendAccount: '',
       userAccount: '',
       readTime: '',
-      time: ''
+      time: '',
+      id:''
     }
     obj.title = res.data.name
     obj.userAccount=res.data.account;
     myMessage.push(obj)
     console.log('mine',myMessage)
     SocketService.myMessage = res.data
+    SocketService.id = res.data.id
   })
 
 })

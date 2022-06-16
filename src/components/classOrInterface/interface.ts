@@ -8,5 +8,6 @@ export default interface DataItem {
     userAccount: string
     readTime: string    //最后一次读取的时间
     time: string //成为好友的时间
+    id:string
 }
 

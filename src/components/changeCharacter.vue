@@ -6,7 +6,7 @@
         v-bind="layout"
         name="nest-messages"
         :validate-messages="validateMessages"
-        @finish="onFinish"
+        @finish="update"
     >
       <a-form-item :name="['user', 'name']" label="用户名" :rules="[{ required: true }]">
         <a-input v-model:value="formState.user.name" />
@@ -25,9 +25,6 @@
           <a-select-option value="1">女</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item :name="['user', 'birth']" label="生日" :rules="[{ required: false }]">
-        <a-input v-model:value="formState.user.birth" />
-      </a-form-item>
       <a-form-item :name="['user', 'hometown']" label="家乡" :rules="[{ required: false }]">
         <a-input v-model:value="formState.user.hometown" />
       </a-form-item>
@@ -44,7 +41,7 @@
           v-bind="layout"
           name="nest-messages"
           :validate-messages="validateMessages"
-          @finish="onFinish"
+          @finish="changeRemark"
       >
         <a-form-item :name="['remark']" label="备注" :rules="[{ required: true }]">
           <a-input v-model:value="remarkState.remark" />
@@ -59,6 +56,8 @@
 </template>
 <script setup lang="ts">
 import axios from 'axios'
+import pubsub from "pubsub-js";
+import SocketService from './global.js'
 import { defineComponent, reactive } from 'vue';
 import {useRoute,useRouter} from "vue-router";
 const route=useRoute();
@@ -87,20 +86,85 @@ const validateMessages = {
 const remarkState=reactive({
 remark:userName
 })
-
+const changeRemark=()=>{
+  console.log({
+    'fromAccount': SocketService.account,
+    'toAccount': account,
+    'remark': remarkState.remark
+  })
+  //修改好友的备注
+    axios({
+      url: 'api/friends',
+      method: 'put',
+      params: {
+        'fromAccount': SocketService.account,
+        'toAccount': account,
+        'remark': remarkState.remark
+      }
+    }).then((res) => {
+      //修改成功，把备注修改为修改的
+      let data = res.data
+      if (data.code === '0') {
+        alert("修改成功")
+      } else {
+        alert("修改失败")
+      }
+    })
+}
+//修改自己的详细东西
+const update = (values: any) => {
+  console.log('Success:', values.user);
+  const temp={
+      account:account,
+      name:values.user.name,
+      phone:parseInt(values.user.phone),
+      gender:values.user.gender,
+      hometown: values.user.hometown,
+      password:SocketService.password,
+      id:SocketService.id
+  }
+  console.log(temp)
+  axios({
+    url: 'api/user',
+    method: 'put',
+    params: {
+      'user':temp
+    }
+  }).then((res) => {
+    console.log(res)
+    if (res.data.code == '0') {
+      alert("修改成功")
+      axios({
+        url: 'api/user',
+        method: 'get',
+        params: {
+          'account': account
+        }
+      }).then((res)=>{
+        console.log('111',res)
+        formState.user.name=res.data.name
+        formState.user.phone=res.data.phone
+        formState.user.password=res.data.password
+        formState.user.phone=res.data.phone
+        pubsub.publish('userName', res.data.name)
+      })
+    } else {
+      alert("修改失败")
+    }
+  })
+}
 const formState = reactive({
   user: {
     name: userName,
     phone:'',
     gender:'',
-    birth:'',
-    create_time:'',
-    update_time:'' ,
-    hometown:''
+    hometown:'',
+    password:'',
+    account:account,
   },
 });
-const onFinish = (values: any) => {
-  console.log('Success:', values);
-};
+// const onFinish = (values: any) => {
+//   console.log('Success:', values.user);
+// };
 </script>
 

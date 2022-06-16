@@ -89,7 +89,7 @@ const isLeft = (i) => {
   }
   else return false;
 }
-const reverseMap= SocketService.friendMessageMap[account.value].messageList
+// const reverseMap= SocketService.friendMessageMap[account.value].messageList
 
 //单发消息
 const sendMessage= () => {
@@ -103,8 +103,8 @@ const sendMessage= () => {
     toAccount: account.value,
     sendTime: new Date(),
   }
-  friendMessageMap.unshift(temp);
-  friendMessageMap = SocketService.friendMessageMap[account.value].messageList
+  friendMessageMap.push(temp);
+  // friendMessageMap = SocketService.friendMessageMap[account.value].messageList.reverse()
   console.log(SocketService.friendMessageMap)
 }
 
