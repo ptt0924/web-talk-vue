@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="issues">
+    <option name="index">
+      <map>
+        <entry key="/Dummy.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../src/main/java/com/application/controller/WebSocket.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/vite-project/src/components/addfriend.vue">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/vite-project/src/components/friendsDictory.vue">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/vite-project/src/components/index.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/vite-project/src/components/login.vue">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../softWare/Maven/apache-maven-3.8.1/conf/repository/com/jeesite/jeesite-framework/5.0.1-SNAPSHOT/jeesite-framework-5.0.1-20220407.144310-2.jar!/com/jeesite/common/dao/CrudDao.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../softWare/Maven/apache-maven-3.8.1/conf/repository/com/jeesite/jeesite-framework/5.0.1-SNAPSHOT/jeesite-framework-5.0.1-20220407.144310-2.jar!/com/jeesite/common/service/CrudService.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
