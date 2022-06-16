@@ -9,7 +9,7 @@
                 <a href="https://www.antdv.com/">{{ item.title }}</a>
               </template>
               <template #avatar>
-                <a-avatar  @click.stop="clickCharacter(index)"  src="https://joeschmoe.io/api/v1/random" />
+                <a-avatar @click.stop="clickCharacter(index)" src="https://joeschmoe.io/api/v1/random" />
               </template>
             </a-list-item-meta>
           </a-list-item>
@@ -35,7 +35,7 @@
                     <a>{{ item.title }}</a>
                   </template>
                   <template #avatar>
-                    <a-avatar  @click.stop="clickCharacter(index)"  src="https://joeschmoe.io/api/v1/random" />
+                    <a-avatar src="https://joeschmoe.io/api/v1/random" />
                   </template>
                 </a-list-item-meta>
               </a-list-item>
@@ -54,12 +54,16 @@
 <script setup lang="ts" >
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-import { onMounted, reactive ,ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import router from "../router";
 import SocketService from './global.js'
+import Mes from './classOrInterface/message.js'
+import Socket from "./index.js"
 import DataItem from './classOrInterface/interface.js'
+// let account: any = sessionStorage.getItem['account']
+// let password: any = sessionStorage.getItem['password']
 let account: any = useRoute().query.account
-
+let password: any = useRoute().query.password
 // //得到好友的接口
 // interface DataItem {
 //   title: string
@@ -68,21 +72,30 @@ let account: any = useRoute().query.account
 //   toAccount: string
 // }
 const data: DataItem[] = reactive([])
-let messageList=reactive([]);
-let frinedsAcount:any=reactive([])
+let messageList = reactive([]);
+let frinedsAcount: any = reactive([])
 //点击进入好友的信息页面
 const handle = (t: any) => {
+  //请求是否在线
+  //todo
+  SocketService.ws.appointSend()
   // console.log(data[t].title)
   router.push({ name: "detailsView", params: { userName: data[t].title, account: data[t].friendAccount } });
 };
 
-const clickCharacter=(t:any)=>{
+
+const clickCharacter = (t: any) => {
   // console.log(count);
-  router.push({ name: "charcterDetail" , params: { userName: data[t].title, account: data[t].friendAccount }})
+  router.push({ name: "charcterDetail", params: { userName: data[t].title, account: data[t].friendAccount } })
 }
 
 //挂载的时候提前获取到好友列表和群聊列表  以及一些历史信息
 onMounted(() => {
+  // var url = "ws://192.168.1.166:8088/chat/" + account + "," + password;
+  // var socket = new Socket(url)
+  // console.log(socket)
+  // SocketService.ws = socket
+  //得到好友列表  参数:自己的account
   axios({
     url: 'api/friends',
     method: 'get',
@@ -107,11 +120,11 @@ onMounted(() => {
       console.log('obj', obj)
       data.push(obj)
     }
-    frinedsAcount=data;
+    frinedsAcount = data;
     //放回全局实例中
     SocketService.friendList = data
   })
-
+  //得到好友消息列表  传递自己的account
   axios({
     url: 'api/userMessage',
     method: 'get',
@@ -119,18 +132,49 @@ onMounted(() => {
       'account': account
     }
   }).then((res) => {
-    messageList=res.data;
-    console.log('res',messageList,'111',account)
+    messageList = res.data;
+    console.log('res', messageList, '111', account)
     console.log("消息列表", res)
 
     SocketService.friendMessageMap = res.data
   })
-  // axios({
-  //   url: 'api/user'
-  // })
-})
+  //获取自己信息  参数:自己的account
+  axios({
+    url: 'api/user',
+    method: 'get',
+    params: {
+      'account': account
+    }
+  }).then((res) => {
+    console.log("自己的用户信息", res.data)
+    SocketService.myMessage = res.data
+  })
 
-//跳转页面
+})
+//点击好友头像，查看好友消息,同时获得好友备注  要传递好友的account
+const viewFriendMessage = () => {
+  axios({
+    url: 'api/user',
+    method: 'get',
+    params: {
+      'account': '好友的account'
+    }
+  }).then((res) => {
+    //res.data里面返回好友的信息
+  })
+  //同时得到备注
+  axios({
+    url: 'api/friends',
+    method: 'get',
+    params: {
+      'fromAccount': '自己的账号',
+      'toAccount': '好友的账号'
+    }
+  }).then((res) => {
+    //res.data里面返回备注的信息
+  })
+}
+//跳转添加页面
 const addFriend = () => {
   router.push({ name: "addFriend", params: { userAccount: account } })
 }

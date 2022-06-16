@@ -76,14 +76,14 @@ export default class Socket {
         console.log("result", result.data)
         var json = JSON.parse(result.data)
         //0单聊 1群聊 2服务器发送的 3加好友 4发图片 5发文件
-        console.log('boo',json.code==='0')
+        console.log('boo', json.code === '0')
         if (json.code === '0') {
             console.log("1")
             var map = SocketService.friendMessageMap[json.fromAccount + '']
             //未读消息加1
             map.count = map.count + 1
             //消息列表加1
-          let  list = map.messageList
+            let list = map.messageList
             let m = new Object
             m.fromAccount = json.fromAccount
             m.toAccount = json.toAccount
@@ -91,27 +91,27 @@ export default class Socket {
             m.text = json.mes
             list.push(m)
             console.log('11111')
-            console.log('11111',SocketService.friendMessageMap)
+            console.log('11111', SocketService.friendMessageMap)
             console.log("result", json)
-            pubsub.publish('mes',json)
+            pubsub.publish('mes', json)
         } else if (json.code === '1') {
 
-        } else if (json.code === '2') {
+        } else if (json.code === '2') {//别人同意后 加入好友列表
 
-        } else if (json.code === '3') { //添加好友
+        } else if (json.code === '3') { //收到别人请求添加好友
 
         } else if (json.code === '4') {  //得到别人上线的消息
             //先获取以前的在线好友
-            let onlineAccount = WebsocketService.onlineFriend
-            onlineAccount.push(json.account)
-            console.log("onmessage中的新增在线好友", WebsocketService.onlineFriend)
+            // let onlineAccount = WebsocketService.onlineFriend
+            // onlineAccount.push(json.account)
+            // console.log("onmessage中的新增在线好友", WebsocketService.onlineFriend)
         } else if (json.code === '9') {
 
         }
         else if (json.code === '8') {
-            console.log("获取在线好友列表")
-            WebsocketService.onlineFriend = json.onlineAccount
-            console.log("onlineAccount", WebsocketService.onlineFriend)
+            console.log("是否在线")
+            // WebsocketService.onlineFriend = json.onlineAccount
+            // console.log("onlineAccount", WebsocketService.onlineFriend)
         }
         const normalizedData = data;
         // this.handleCallback(normalizedData)
@@ -145,7 +145,6 @@ export default class Socket {
 
     reConnect() { // 开启重连
         this.pollingRollback.open() // ws连接之前，开启轮询
-
         if (this.reConnectTimer) return
         this.reConnectTimer = setInterval(() => {
             this.start()

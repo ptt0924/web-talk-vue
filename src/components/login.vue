@@ -61,12 +61,17 @@ const openDictory = () => {
     else if (data.code === '1') {
       alert("密码错误")
     } else {
+      // sessionStorage.setItem("account", account.value)
+      // sessionStorage.setItem("password", password.value)
+      // SocketService.account = account.value
+      // SocketService.password = password.value
       var url = "ws://192.168.1.166:8088/chat/" + account.value + "," + password.value;
       var socket = new Socket(url)
       console.log(socket)
       SocketService.ws = socket
       SocketService.account = account.value
-      router.push({ name: "friendsDictory", query: { account: account.value } });
+      SocketService.password = password.value
+      router.push({ name: "friendsDictory", query: { account: account.value, password: password.value } });
     }
   })
 };
