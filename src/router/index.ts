@@ -32,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [{
         component: () => import('../components/sendAddFriend.vue')
     },
     {
+        name: 'acceptFriendList',
+        path: '/acceptFriendList',
+        component: () => import('../components/acceptFriendList.vue')
+    },
+    {
         name:'charcterDetail',
         path: '/characterDetail',
         component: () => import('../components/characterDetail.vue'),

@@ -1,7 +1,7 @@
 <template>
   <div class="total">
     <div  class="card">
-      <a-card hoverable style="width: 300px">
+      <a-card type="inner" :bodyStyle="bodyStyle" hoverable>
         <template #cover>
           <img
               alt="example"
@@ -29,7 +29,7 @@
         </a-card-meta>
       </a-card>
     </div>
-    <div ><router-view class="animate__animated animate__fadeInDownBig"></router-view></div>
+    <div class="showPage"><router-view class="animate__animated animate__fadeInDownBig"></router-view></div>
   </div>
 
 </template>
@@ -48,7 +48,16 @@ onMounted(()=>{
   const pId=pubsub.subscribe(('userName'),(_,data)=>{
     userName.value=data
   })
+  const remarkId=pubsub.subscribe(('remark'),(_,data)=>{
+    userName.value=data
+  })
 })
+
+const bodyStyle={
+  width: '300px',
+  height:'300px',
+  backgroundImage: 'linear-gradient(to bottom, rgba(119, 246, 210, 0.5), rgba(199, 237, 204, 0.5))'
+}
 
 console.log(route.params.userName)
 console.log(SocketService.account)
@@ -77,8 +86,14 @@ const returnBack=()=>{
   display: flex;
 }
 .card{
-  margin-left: 200px;
-  margin-right: 100px;
+  margin-left: 300px;
+}
+.showPage{
+  background-color: white;
+}
+.ant-card-cover{
+  /*!important;*/
+  /*height: 200px;*/
 }
 </style>
 

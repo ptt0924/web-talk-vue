@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="external">
+    <div class="head">
+      <a-avatar src="https://joeschmoe.io/api/v1/random" />
+      {{ userName }}
+    </div>
     <div class="MainItem">
-      <div class="head">
-        <a-avatar src="https://joeschmoe.io/api/v1/random" />
-        {{ userName }}
-      </div>
       <div v-for="(item, i) in friendMessageMap" class="messageBod">
         <div v-if="isLeft(i)" class="show-left">
           <div class="otherAvatar">
@@ -19,12 +19,15 @@
           </div>
         </div>
       </div>
-      <div class="sendArea">
-        <a-textarea @keyup.enter="sendMessage" v-model:value="value" placeholder="Basic usage" :rows="4" />
-        <div class="flex">
-          <a-button @click="sendMessage" type="primary">发送</a-button>
-          <a-button @click="returnBack">返回</a-button>
-        </div>
+    </div>
+    <div class="sendArea">
+      <a-textarea @keyup.enter="sendMessage" v-model:value="value" placeholder="Basic usage" :rows="4" />
+      <div class="flex">
+        <div></div>
+        <div>  <a-button @click="sendMessage" type="primary">发送</a-button>
+          <a-button @click="returnBack">返回</a-button></div>
+
+
       </div>
     </div>
   </div>
@@ -123,8 +126,11 @@ console.log(route.params)
 
 .MainItem {
   background-color: aliceblue;
-  padding-left: 200px;
-  padding-right: 200px;
+  padding-left: 50px;
+  padding-right: 50px;
+  position: relative;
+  overflow: auto;
+  height: 400px;
 }
 
 .show-right {
@@ -141,9 +147,14 @@ console.log(route.params)
 
 .flex {
   display: flex;
+  flex-direction:row-reverse;
+  background-color: white;
 }
 
 .head {
   width: 100%;
+}
+.external{
+  padding: 100px 200px 200px;
 }
 </style>

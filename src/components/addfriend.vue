@@ -10,11 +10,13 @@
       <a-list   item-layout="horizontal" :data-source="searchPerson">
         <template #renderItem="{ item }">
           <a-list-item>
+
             <a-list-item-meta
                 description="Ant Design, a design language for background applications, is refined by Ant UED Team"
             >
+
               <template #title>
-                <a href="https://www.antdv.com/">{{ item.name }}</a>
+                <a >{{ item.name }}</a>
               </template>
               <template #avatar>
                 <a-avatar src="https://joeschmoe.io/api/v1/random" />
@@ -33,7 +35,7 @@
 </template>
 <script lang="ts" setup>
 import axios from 'axios';
-import {onMounted, reactive, ref} from 'vue';
+import { reactive, ref} from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import Mes from './classOrInterface/message.js'
 import SocketService from './global.js'
@@ -45,7 +47,8 @@ const router=useRouter()
 // }
 const searchPerson:any[]=reactive([])
 //该用户的账户
-let account = route.params.userAccount
+let account = SocketService.account
+console.log('from',account)
 //输入框所要输入的账户
 let toAccount
 //设置备注
@@ -56,6 +59,12 @@ const returnBack=()=>{
 const enterAccount=ref('')
 
 const openSendAddFriend=()=>{
+  console.log(account)
+  // axios({
+  //
+  // }).then(()=>{
+  //
+  // })
   router.push({name:'sendAddFriend',params: {toAccount:searchPerson[0].account,name:searchPerson[0].name,fromAccount:account}})
 }
 const isMyFriend=(t:any)=>{
@@ -107,18 +116,7 @@ const aggree = () => {
     //重新更新好友的列表
 }
 //挂载的时候就获得别人的请求添加好友信息
-onMounted(() => {
-    axios({
-        url: 'api/getAddFriendMessage',
-        method: 'get',
-        params: {
-            'account': SocketService.account
-        }
-    }).then((res) => {
-        console.log("得到添加好友信息的列表", res.data)
-        //这里得到好友请求的消息
-    })
-})
+
 </script>
 <style scoped>
 .searchList{

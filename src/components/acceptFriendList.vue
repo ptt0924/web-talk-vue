@@ -1,0 +1,95 @@
+<template>
+  <div class="listBox">
+    <div class="flex" v-if="isShowRemark">
+      <div style="width: 90%" class="remark">
+        <a-input v-model:value="remark" placeholder="输入备注"></a-input>
+      </div>
+      <div style="width: 10%" >
+          <a-button @click="sureToAdd" type="primary" block>确定添加</a-button>
+      </div>
+    </div>
+  <a-list
+      class="demo-loadmore-list"
+      item-layout="horizontal"
+      :data-source="addFriends"
+  >
+    <template #renderItem="{ item,index }">
+      <a-list-item>
+        <template #actions>
+          <a @click="add(item)">添加</a>
+          <a >取消</a>
+        </template>
+          <a-list-item-meta
+          >
+            <template #title>
+              <a href="https://www.antdv.com/">{{ item.name }}</a>
+            </template>
+            <template #avatar>
+              <a-avatar src="https://joeschmoe.io/api/v1/random" />
+            </template>
+          </a-list-item-meta>
+      </a-list-item>
+    </template>
+  </a-list>
+  </div>
+</template>
+<script setup lang="ts">
+import axios from "axios";
+import SocketService from './global.js'
+import {defineComponent, onMounted, ref, nextTick, reactive} from 'vue';
+import Mes from "./classOrInterface/message";
+const count = 3;
+let resValue:any=reactive({})
+const isShowRemark=ref(false)
+const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
+const add=(res)=>{
+  isShowRemark.value=true
+  resValue=res
+}
+    const initLoading = ref(true);
+    const remark=ref('')
+    const data = ref([]);
+    const list = ref([]);
+    const sureToAdd=()=>{
+  console.log(remark.value)
+  let aggreeAdd: any = new Mes('2', remark.value, resValue.fromAccount, resValue.toAccount)
+  SocketService.ws.appointSend(aggreeAdd)
+
+}
+    const addFriends=ref([])
+onMounted(() => {
+  console.log(SocketService.account)
+  axios({
+    url: 'api/getAddFriendMessage',
+    method: 'get',
+    params: {
+      'account': SocketService.account
+    }
+  }).then((res) => {
+    console.log("得到添加好友信息的列表", res.data)
+    SocketService.requestAdd=res.data
+      addFriends.value=res.data
+  })
+})
+    onMounted(() => {
+      fetch(fakeDataUrl)
+          .then(res => res.json())
+          .then(res => {
+            console.log(res)
+            initLoading.value = false;
+            list.value = res.results;
+          });
+    });
+</script>
+<style scoped>
+.demo-loadmore-list {
+  min-height: 350px;
+}
+.listBox{
+  background-color: aliceblue;
+  margin: 200px;
+}
+.flex{
+  display: flex;
+}
+</style>

@@ -17,9 +17,9 @@
       </a-list>
     </div>
     <div class="operation">
-      <div>
+      <div class="buttonBox">
         <a-button type="primary">单聊</a-button>
-        <a-button type="primary">群聊</a-button>
+        <a-button  type="primary" @click="checkAcceptFriendsList">查看添加好友列表</a-button>
         <a-button type="primary" @click="addFriend">添加好友</a-button>
       </div>
       <div></div>
@@ -71,6 +71,9 @@ let password: any = useRoute().query.password
 //   description?: string
 //   toAccount: string
 // }
+const checkAcceptFriendsList=()=>{
+  router.push({name:'acceptFriendList'})
+}
 const data: DataItem[] = reactive([])
 const myMessage:DataItem[]=reactive([])
 let messageList = reactive([]);
@@ -197,12 +200,13 @@ const addFriend = () => {
 .list {
   width: 500px;
   height: 500px;
-  background-color: aliceblue;
+  background-color: white;
 }
 
 .head {
   width: 500px;
-  background-color: aliceblue;
+  background-image: linear-gradient(to bottom, rgba(220, 246, 241, 0.5), rgba(199, 237, 204, 0.5))
+
 }
 
 .operation {
@@ -211,9 +215,16 @@ const addFriend = () => {
 
 .flex {
   display: flex;
+  border-bottom: lightgray 1px solid;
+}
+.flex:hover{
+  background-color: lightgray;
 }
 
 .list-item {
-  width: 70%
+  width: 90%
+}
+.buttonBox{
+
 }
 </style>

@@ -35,6 +35,7 @@ import{ref}from 'vue'
 import {useRouter,useRoute} from "vue-router";
 import Mes from "./classOrInterface/message";
 import SocketService from "./global.js";
+import axios from "axios";
 const route=useRoute();
 const router=useRouter();
 
@@ -49,13 +50,22 @@ const data: DataItem[] = [
 const remark=ref('')
 const add = () => {
   const mes=route.params
-  console.log(mes)
-  console.log('3', remark.value, mes.fromAccount, mes.toAccount)
-  let addRequest: any = new Mes('3', remark.value, mes.fromAccount, mes.toAccount)
-  console.log(SocketService)
-  SocketService.ws.appointSend(addRequest)
-  alert('发送成功')
-  router.push({name:'addFriend'})
+  axios({
+    method:'get',
+    params:{
+      fromAccount:mes.fromAccount,
+      toAccount:mes.toAccount
+    }
+  }).then((res)=>{
+    console.log(res)
+  })
+  // console.log(mes)
+  // console.log('3', remark.value, mes.fromAccount, mes.toAccount)
+  // let addRequest: any = new Mes('3', remark.value, mes.fromAccount, mes.toAccount)
+  // console.log(SocketService)
+  // SocketService.ws.appointSend(addRequest)
+  // alert('发送成功')
+  // router.push({name:'addFriend'})
 }
 const returnBack=()=>{
   router.push({name:'addFriend'})

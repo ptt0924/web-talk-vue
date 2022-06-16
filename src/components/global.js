@@ -14,4 +14,5 @@ export default class SocketService {
     //自己的用户信息
     static myMessage
     static id
+    static requestAdd
 }

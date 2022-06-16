@@ -184,7 +184,7 @@ const openDictory = (values:any) => {
       console.log(socket)
       SocketService.ws = socket
       SocketService.account = loginState.account
-      SocketService.password = password.value
+      SocketService.password = loginState.password
       router.push({ name: "friendsDictory", query: { account: loginState.account, password:loginState.account} });
     }
   })
