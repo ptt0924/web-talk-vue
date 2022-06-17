@@ -108,27 +108,10 @@ const clickCharacter = (t: any,operation:string) => {
 //挂载的时候提前获取到好友列表和群聊列表  以及一些历史信息
 onMounted(() => {
   console.log('挂载')
-  // var url = "ws://192.168.1.166:8088/chat/" + account + "," + password;
-  // var socket = new Socket(url)
-  // console.log(socket)1
-  // SocketService.ws = socket
+  //获取在线非在线好友列表
+  const mes=new Mes('1',account)
+  SocketService.ws.appointSend(mes)
 
-    // const listId=pubsub.subscribe('returnList',()=>{
-    //   console.log('returnList')
-    //   axios({
-    //     url: 'api/userMessage',
-    //     method: 'get',
-    //     params: {
-    //       'account': account
-    //     }
-    //   }).then((res) => {
-    //     messageList = res.data;
-    //     console.log('res', messageList, '111', account)
-    //     console.log("消息列表", res)
-    //     SocketService.friendMessageMap = res.data
-    //   })
-    //
-    // })
   //得到好友列表  参数:自己的account
   axios({
     url: 'api/friends',

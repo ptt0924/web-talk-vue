@@ -179,7 +179,7 @@ const openDictory = (values:any) => {
     else if (data.code === '1') {
       alert("密码错误")
     } else {
-      var url = "ws://192.168.1.166:8088/chat/" + loginState.account+ "," + loginState.account;
+      var url = "ws://192.168.1.166:8088/chat/" + loginState.account+ "," + loginState.password;
       var socket = new Socket(url)
       console.log(socket)
       SocketService.ws = socket

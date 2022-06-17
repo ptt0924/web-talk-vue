@@ -93,6 +93,7 @@ onMounted(() => {
             list.value = res.results;
           });
       const pubSubId=pubsub.subscribe('pushAccept',(_,data)=>{
+        console.log('发送到好友的东西')
         addFriends.value=data
       })
     });

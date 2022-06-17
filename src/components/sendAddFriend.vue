@@ -66,7 +66,7 @@ const add = () => {
       console.log(mes)
       console.log('3', remark.value, mes.fromAccount, mes.toAccount)
       let addRequest: any = new Mes('3', remark.value, mes.fromAccount, mes.toAccount)
-      console.log(SocketService)
+      console.log(SocketService.ws)
       SocketService.ws.appointSend(addRequest)
       alert('发送成功')
       router.push({name:'addFriend'})

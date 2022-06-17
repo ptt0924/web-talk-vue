@@ -95,6 +95,7 @@ export default class Socket {
             console.log("result", json)
             pubsub.publish('mes', json)
         } else if (json.code === '1') {//判断是否在线
+
             if (json.mes === '0') {
                 //在线
             } else {
@@ -111,18 +112,20 @@ export default class Socket {
         } else if (json.code === '3') { //收到别人请求添加好友
             //这里把好友请求加入请求好友列表里
             //往这个里面添加好友请求SocketService.requetAdd
+            var map = SocketService.friendMessageMap[json.fromAccount + '']
+            let requestAdd = map.requestAdd
             console.log('3res',SocketService.requestAdd)
             console.log('3res',json)
             const temp={
                 message:json.mes,
-                name:json.mes,
+                name:json.name,
                 toAccount:json.toAccount,
                 fromAccount:json.fromAccount
             }
             console.log('res3',temp)
-            console.log('res3',SocketService.requestAdd)
-            console.log()
+            console.log('res3',requestAdd)
             SocketService.requestAdd.push(temp)
+            console.log('res',SocketService.requestAdd)
             pubsub.publish('pushAccept',SocketService.requestAdd)
         } else if (json.code === '4') {
 
@@ -149,11 +152,15 @@ export default class Socket {
 
     onClose = (result) => {
         console.warn(`【Websocket is closed】`)
-        this.ws.removeEventListener("open", this.onOpen);
-        this.ws.removeEventListener("message", this.onMessage);
-        this.ws.removeEventListener("close", this.onClose);
-        this.ws.removeEventListener("error", this.onError);
-        this.ws = null;
+        var url = "ws://192.168.1.166:8088/chat/" + loginState.account+ "," + loginState.account;
+        var socket = new Socket(url)
+        console.log(socket)
+        SocketService.ws = socket
+        // this.ws.removeEventListener("open", this.onOpen);
+        // this.ws.removeEventListener("message", this.onMessage);
+        // this.ws.removeEventListener("close", this.onClose);
+        // this.ws.removeEventListener("error", this.onError);
+        // this.ws = null;
     }
 
     onError = (error) => {
