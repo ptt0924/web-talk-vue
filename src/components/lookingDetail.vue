@@ -20,7 +20,7 @@ console.log(route.params)
 const account=route.params.account
 const mes=ref(1)
 const returnBack=()=>{
-  router.push({ name: "charcterDetail" })
+  router.push({ name: "charcterDetail",params:{account:account , userName:route.params.userName} })
 }
 const detailState=reactive({
   remark:route.params.userName,

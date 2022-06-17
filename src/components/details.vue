@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="sendArea">
-      <a-textarea @keyup.enter="sendMessage" v-model:value="value" placeholder="Basic usage" :rows="4" />
+      <a-textarea @keyup.enter="sendMessage" v-model:value="value" placeholder="" :rows="4" />
       <div class="flex">
         <div></div>
         <div>  <a-button @click="sendMessage" type="primary">发送</a-button>
@@ -112,6 +112,7 @@ const sendMessage= () => {
 }
 
 const returnBack=()=>{
+  pubsub.publish('returnList')
   router.push({name:'friendsDictory',query: { account: SocketService.account }})
 }
 const userName: any = ref('')
@@ -155,6 +156,6 @@ console.log(route.params)
   width: 100%;
 }
 .external{
-  padding: 100px 200px 200px;
+  padding: 0px 200px 200px;
 }
 </style>

@@ -13,10 +13,12 @@
       item-layout="horizontal"
       :data-source="addFriends"
   >
+
     <template #renderItem="{ item,index }">
+      <div class="friendAccept">
       <a-list-item>
         <template #actions>
-          <a @click="add(item)">添加</a>
+          <a @click="add(item)">同意</a>
           <a >取消</a>
         </template>
           <a-list-item-meta
@@ -29,22 +31,32 @@
             </template>
           </a-list-item-meta>
       </a-list-item>
+      </div>
     </template>
   </a-list>
+    <a-button block @click="returnBack">返回</a-button>
   </div>
 </template>
 <script setup lang="ts">
+import pubsub from 'pubsub-js'
 import axios from "axios";
+import {useRouter} from 'vue-router'
 import SocketService from './global.js'
 import {defineComponent, onMounted, ref, nextTick, reactive} from 'vue';
 import Mes from "./classOrInterface/message";
 const count = 3;
+const router=useRouter()
 let resValue:any=reactive({})
 const isShowRemark=ref(false)
 const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
 const add=(res)=>{
   isShowRemark.value=true
   resValue=res
+    //重新更新好友的列表
+
+}
+const returnBack=()=>{
+  router.push({name:'friendsDictory',query: { account: SocketService.account }})
 }
     const initLoading = ref(true);
     const remark=ref('')
@@ -54,7 +66,8 @@ const add=(res)=>{
   console.log(remark.value)
   let aggreeAdd: any = new Mes('2', remark.value, resValue.fromAccount, resValue.toAccount)
   SocketService.ws.appointSend(aggreeAdd)
-
+  alert('添加成功')
+      router.push({name:'friendsDictory',query:{account:SocketService.account,password:SocketService.password}})
 }
     const addFriends=ref([])
 onMounted(() => {
@@ -79,6 +92,9 @@ onMounted(() => {
             initLoading.value = false;
             list.value = res.results;
           });
+      const pubSubId=pubsub.subscribe('pushAccept',(_,data)=>{
+        addFriends.value=data
+      })
     });
 </script>
 <style scoped>
@@ -86,10 +102,16 @@ onMounted(() => {
   min-height: 350px;
 }
 .listBox{
-  background-color: aliceblue;
+  background-color: white;
   margin: 200px;
 }
 .flex{
   display: flex;
+}
+.friendAccept{
+  border-bottom: lightgray 1px solid;
+}
+.friendAccept:hover{
+  background-color: lightgray;
 }
 </style>

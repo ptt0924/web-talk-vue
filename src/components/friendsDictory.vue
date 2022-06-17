@@ -4,7 +4,9 @@
       <a-list item-layout="horizontal" :data-source="myMessage">
         <template #renderItem="{ item, index }">
           <a-list-item >
-            <a-list-item-meta>
+            <a-list-item-meta
+                description="在线"
+            >
               <template #title>
                 <div>{{ item.title }}</div>
               </template>
@@ -18,9 +20,12 @@
     </div>
     <div class="operation">
       <div class="buttonBox">
+        <div>
         <a-button type="primary">单聊</a-button>
-        <a-button  type="primary" @click="checkAcceptFriendsList">查看添加好友列表</a-button>
-        <a-button type="primary" @click="addFriend">添加好友</a-button>
+        </div>
+        <div> <a-button  type="primary" @click="checkAcceptFriendsList">查看添加好友列表</a-button></div>
+       <div><a-button type="primary" @click="addFriend">添加好友</a-button></div>
+
       </div>
       <div></div>
     </div>
@@ -30,7 +35,7 @@
           <div class="flex">
             <div class="list-item" @click="handle">
               <a-list-item @click="handle(index)">
-                <a-list-item-meta :description=item.description>
+                <a-list-item-meta description="在线">
                   <template #title>
                     <a>{{ item.title }}</a>
                   </template>
@@ -53,7 +58,9 @@
 </template>
 <script setup lang="ts" >
 import axios from 'axios';
+import pubsub from "pubsub-js";
 import { useRoute } from 'vue-router';
+import service from './service.js'
 import { onMounted, reactive, ref } from "vue";
 import router from "../router";
 import SocketService from './global.js'
@@ -71,6 +78,7 @@ let password: any = useRoute().query.password
 //   description?: string
 //   toAccount: string
 // }
+
 const checkAcceptFriendsList=()=>{
   router.push({name:'acceptFriendList'})
 }
@@ -99,17 +107,36 @@ const clickCharacter = (t: any,operation:string) => {
 
 //挂载的时候提前获取到好友列表和群聊列表  以及一些历史信息
 onMounted(() => {
+  console.log('挂载')
   // var url = "ws://192.168.1.166:8088/chat/" + account + "," + password;
   // var socket = new Socket(url)
   // console.log(socket)1
   // SocketService.ws = socket
+
+    // const listId=pubsub.subscribe('returnList',()=>{
+    //   console.log('returnList')
+    //   axios({
+    //     url: 'api/userMessage',
+    //     method: 'get',
+    //     params: {
+    //       'account': account
+    //     }
+    //   }).then((res) => {
+    //     messageList = res.data;
+    //     console.log('res', messageList, '111', account)
+    //     console.log("消息列表", res)
+    //     SocketService.friendMessageMap = res.data
+    //   })
+    //
+    // })
   //得到好友列表  参数:自己的account
   axios({
     url: 'api/friends',
     method: 'get',
     params: {
       'account': account
-    }
+    },
+    headers: { 'Cache-Control': 'no-cache' },
   }).then((res) => {
     console.log("得到好友列表", res)
     for (let i = 0; i < res.data.length; i++) {
@@ -140,7 +167,8 @@ onMounted(() => {
     method: 'get',
     params: {
       'account': account
-    }
+    },
+    headers: { 'Cache-Control': 'no-cache' },
   }).then((res) => {
     messageList = res.data;
     console.log('res', messageList, '111', account)
@@ -154,7 +182,8 @@ onMounted(() => {
     method: 'get',
     params: {
       'account': account
-    }
+    },
+    headers: { 'Cache-Control': 'no-cache' },
   }).then((res:any) => {
     console.log('自己的信息',res)
     const obj: DataItem = {
@@ -211,6 +240,8 @@ const addFriend = () => {
 
 .operation {
   display: flex;
+  width: 500px;
+  justify-content:space-between;
 }
 
 .flex {
@@ -225,6 +256,7 @@ const addFriend = () => {
   width: 90%
 }
 .buttonBox{
-
+  display: flex;
+  justify-content:space-between;
 }
 </style>

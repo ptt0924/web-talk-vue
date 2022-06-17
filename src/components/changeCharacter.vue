@@ -71,7 +71,7 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 const returnBack=()=>{
-  router.push({name:'charcterDetail'})
+  router.push({name:'charcterDetail',params:{account:route.params.account,userName:userName}})
 }
 const validateMessages = {
   required: '${label} is required!',

@@ -51,21 +51,29 @@ const remark=ref('')
 const add = () => {
   const mes=route.params
   axios({
+    url:'/api/isRequestAddFriend',
     method:'get',
     params:{
       fromAccount:mes.fromAccount,
       toAccount:mes.toAccount
     }
   }).then((res)=>{
-    console.log(res)
+    console.log(res.data.code)
+    if(res.data.code==='0'){
+      alert('已经请求过了，不能发请求了')
+    }
+    else {
+      console.log(mes)
+      console.log('3', remark.value, mes.fromAccount, mes.toAccount)
+      let addRequest: any = new Mes('3', remark.value, mes.fromAccount, mes.toAccount)
+      console.log(SocketService)
+      SocketService.ws.appointSend(addRequest)
+      alert('发送成功')
+      router.push({name:'addFriend'})
+    }
+
   })
-  // console.log(mes)
-  // console.log('3', remark.value, mes.fromAccount, mes.toAccount)
-  // let addRequest: any = new Mes('3', remark.value, mes.fromAccount, mes.toAccount)
-  // console.log(SocketService)
-  // SocketService.ws.appointSend(addRequest)
-  // alert('发送成功')
-  // router.push({name:'addFriend'})
+
 }
 const returnBack=()=>{
   router.push({name:'addFriend'})

@@ -102,11 +102,12 @@ export default class Socket {
             }
         } else if (json.code === '2') {//别人同意后 加入好友列表
             let friend = new Object()
-            friend.userAccount = json.fromAccount
-            friend.friendAccount = json.toAccount
-            friend.remark = json.mes
             console.log('2res',result)
-            SocketService.push(friend)
+            // friend.userAccount = json.fromAccount
+            // friend.friendAccount = json.toAccount
+            // friend.remark = json.mes
+            // console.log('2res',result)
+            // SocketService.push(friend)
         } else if (json.code === '3') { //收到别人请求添加好友
             //这里把好友请求加入请求好友列表里
             //往这个里面添加好友请求SocketService.requetAdd
@@ -114,12 +115,15 @@ export default class Socket {
             console.log('3res',json)
             const temp={
                 message:json.mes,
-                name:json.name,
+                name:json.mes,
                 toAccount:json.toAccount,
                 fromAccount:json.fromAccount
             }
+            console.log('res3',temp)
+            console.log('res3',SocketService.requestAdd)
+            console.log()
             SocketService.requestAdd.push(temp)
-
+            pubsub.publish('pushAccept',SocketService.requestAdd)
         } else if (json.code === '4') {
 
         } else if (json.code === '9') {

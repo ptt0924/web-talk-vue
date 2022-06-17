@@ -14,5 +14,6 @@ export default class SocketService {
     //自己的用户信息
     static myMessage
     static id
+    //添加好友列表请求
     static requestAdd
 }

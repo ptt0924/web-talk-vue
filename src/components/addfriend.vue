@@ -12,7 +12,6 @@
           <a-list-item>
 
             <a-list-item-meta
-                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
             >
 
               <template #title>
@@ -95,9 +94,11 @@ const onSearch = (value:any) => {
       }
     }).then((res) => {
       let data = res.data
-      console.log(data)
-      if (data.code === '1') {
-        searchPerson.push(JSON.parse(data.message))
+      console.log(JSON.parse(data).code)
+      if (JSON.parse(data).code === '1') {
+        console.log('进入了')
+        searchPerson.push(JSON.parse(JSON.parse(data).data));
+        console.log(searchPerson)
         console.log('1111111',searchPerson)
       } else if (data.code === '0') {
         alert('没有该用户')

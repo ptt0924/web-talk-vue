@@ -1,10 +1,13 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import 'animate.css'
+import {useRoute} from'vue-router'
+const route=useRoute()
 </script>
 
 <template>
-  <router-view></router-view>
+  <router-view :key="route.fullPath" class="animate__animated animate__fadeInRightBig"></router-view>
 </template>
 
 <style>
