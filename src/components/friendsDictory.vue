@@ -35,7 +35,7 @@
           <div class="flex">
             <div class="list-item" @click="handle">
               <a-list-item @click="handle(index)">
-                <a-list-item-meta description="在线">
+                <a-list-item-meta :description=isOlineArr[index]>
                   <template #title>
                     <a>{{ item.title }}</a>
                   </template>
@@ -61,7 +61,7 @@ import axios from 'axios';
 import pubsub from "pubsub-js";
 import { useRoute } from 'vue-router';
 import service from './service.js'
-import { onMounted, reactive, ref } from "vue";
+import {onMounted, onUnmounted, reactive, ref} from "vue";
 import router from "../router";
 import SocketService from './global.js'
 import Mes from './classOrInterface/message.js'
@@ -104,13 +104,39 @@ const clickCharacter = (t: any,operation:string) => {
     router.push({name: "charcterDetail", params: {userName: data[t].title, account: data[t].friendAccount}})
   }
 }
-
+let isOlineArr:any=reactive([]);
+let isOrdinary:any=reactive([])
+console.log('清空',isOlineArr)
+//渲染完成之后清空数组
+const ordinaryOnlineMap:any=reactive([])
 //挂载的时候提前获取到好友列表和群聊列表  以及一些历史信息
 onMounted(() => {
   console.log('挂载')
   //获取在线非在线好友列表
-  const mes=new Mes('1',account)
-  SocketService.ws.appointSend(mes)
+  const pubIsOline=pubsub.subscribe('isOnline',(_,t)=>{
+    isOlineArr.length=0
+    console.log('看看')
+    for(let i=0;i<t.length;i++){
+      isOrdinary.push(t[i].account)
+      if(t[i].state==0){
+        isOlineArr.push('离线')
+      }
+      else {
+        isOlineArr.push('在线')
+      }
+    }
+    console.log('124',isOlineArr)
+    console.log('isOrdinary',isOrdinary)
+  })
+
+  const pubsubChangeOnline=pubsub.subscribe('changeOnline',(_,data)=>{
+    console.log('改变视图',data)
+    const index=isOrdinary.indexOf(parseInt(data.mes))
+    isOlineArr[index]='在线'
+  })
+
+  // const mes=new Mes('1',"",account)
+  // SocketService.ws.appointSend(mes)
 
   //得到好友列表  参数:自己的account
   axios({
@@ -184,7 +210,13 @@ onMounted(() => {
     SocketService.myMessage = res.data
     SocketService.id = res.data.id
   })
-
+//  获取好友是否在线
+    const count=ref('0')
+    const fromAccount=SocketService.account
+    const toAccount=account.value
+    count.value=count.value+1;
+    const mesTemp=new Mes('1',"",fromAccount)
+    SocketService.ws.appointSend(mesTemp)
 })
 //点击好友头像，查看好友消息,同时获得好友备注  要传递好友的account
 const viewFriendMessage = () => {

@@ -206,7 +206,7 @@ const openDictory = (values:any) => {
   width: 60%;
   height: 500px;
   align-items: center;
-  background-image: linear-gradient(to bottom, rgba(220, 246, 241, 0.5), rgba(199, 237, 204, 0.5))
+  background-image: linear-gradient(to bottom, rgba(0, 149, 182, 1), rgba(0, 149, 182, 1))
 }
 
 .inputItem {

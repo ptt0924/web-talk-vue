@@ -7,7 +7,7 @@ const route=useRoute()
 </script>
 
 <template>
-  <router-view :key="route.fullPath" class="animate__animated animate__fadeInRightBig"></router-view>
+  <router-view :key="route.fullPath" class="animate__animated animate__fadeInDownBig"></router-view>
 </template>
 
 <style>

@@ -3,7 +3,11 @@
     <div class="head">
       <a-avatar src="https://joeschmoe.io/api/v1/random" />
       {{ userName }}
+      <div>
+        <a @click="checkHistroy">查看历史记录</a>
+      </div>
     </div>
+
     <div class="MainItem">
       <div v-for="(item, i) in friendMessageMap" class="messageBod">
         <div v-if="isLeft(i)" class="show-left">
@@ -41,22 +45,39 @@ import { useRoute ,useRouter} from 'vue-router';
 import SocketService from './global.js'
 import Mes from './classOrInterface/message.js'
 import WebsocketService from "./global";
+import axios from "axios";
 const route = useRoute();
 const router=useRouter()
 const value = ref('')
 //好友的账号
 const account: any = ref('')
+const count=ref(0)
 account.value = route.params.account
+
+const checkHistroy=()=>{
+  count.value=count.value+1
+  console.log('count',count.value)
+ axios({
+   url:'api/message',
+   params:{
+    fromAccount:WebsocketService.account,
+     toAccount:account.value,
+     count:count.value
+   },
+   method:'get'
+ }).then((res)=>{
+   console.log(res)
+   friendMessageMap.unshift(res.data)
+   value.value = '1'
+   value.value = ''
+ })
+}
 
 const ws = SocketService.ws
 //自己的账号
 const myAccount = SocketService.account
 let friendMessageMap: any = reactive([]);
-
-
   friendMessageMap = SocketService.friendMessageMap[account.value].messageList
-
-
 console.log('1111', friendMessageMap)
 
 // onMounted(()=>{

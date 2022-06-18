@@ -78,7 +78,6 @@ export default class Socket {
         //0单聊 1群聊 2服务器发送的 3加好友 4发图片 5发文件
         console.log('boo', json.code === '0')
         if (json.code === '0') {
-            console.log("1")
             var map = SocketService.friendMessageMap[json.fromAccount + '']
             //未读消息加1
             map.count = map.count + 1
@@ -95,20 +94,28 @@ export default class Socket {
             console.log("result", json)
             pubsub.publish('mes', json)
         } else if (json.code === '1') {//判断是否在线
-
-            if (json.mes === '0') {
-                //在线
-            } else {
-                //不在线
+            console.log('1son',json.toAccount)
+            if(json.toAccount==2){
+                console.log('res2')
+                pubsub.publish('isOnline',JSON.parse(json.mes))
             }
+            else if(json.toAccount==1){
+                console.log('res1')
+               pubsub.publish('changeOnline',json)
+            }
+               // pubsub.publish('changeOnline',json)
+               //  pubsub.publish('isOnline',JSON.parse(json.mes))
+
         } else if (json.code === '2') {//别人同意后 加入好友列表
-            let friend = new Object()
-            console.log('2res',result)
+            // let friend = new Object()
+            // console.log('2res',result)
+            // var map = SocketService.friendMessageMap[json.fromAccount + '']
             // friend.userAccount = json.fromAccount
             // friend.friendAccount = json.toAccount
             // friend.remark = json.mes
             // console.log('2res',result)
             // SocketService.push(friend)
+            pubsub.publish('mes', json)
         } else if (json.code === '3') { //收到别人请求添加好友
             //这里把好友请求加入请求好友列表里
             //往这个里面添加好友请求SocketService.requetAdd
@@ -152,7 +159,7 @@ export default class Socket {
 
     onClose = (result) => {
         console.warn(`【Websocket is closed】`)
-        var url = "ws://192.168.1.166:8088/chat/" + loginState.account+ "," + loginState.account;
+        var url = "ws://192.168.1.166:8088/chat/" + SocketService.account+ "," + SocketService.account;
         var socket = new Socket(url)
         console.log(socket)
         SocketService.ws = socket

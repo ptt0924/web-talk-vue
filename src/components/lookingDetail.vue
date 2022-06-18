@@ -3,7 +3,7 @@
     <a-card :title=detailState.userName :bordered="false" style="width: 300px">
       <p>备注:{{detailState.remark}}</p>
       <p>手机号:{{detailState.phone}}</p>
-      <p>性别:{{detailState.gender==0?'男':'女'}}</p>
+      <p>性别:{{smallGender()}}</p>
       <p>家乡:{{detailState.hometown}}</p>
     </a-card>
     <a-button style="width:300px" @click="returnBack">收起</a-button>
@@ -19,6 +19,16 @@ const route=useRoute()
 console.log(route.params)
 const account=route.params.account
 const mes=ref(1)
+const smallGender=()=>{
+  console.log(detailState.gender==0)
+  if(detailState.gender==0){
+    console.log('进来男了')
+    return '男'
+  }
+  else if(detailState.gender==1){
+    return '女'
+  }
+}
 const returnBack=()=>{
   router.push({ name: "charcterDetail",params:{account:account , userName:route.params.userName} })
 }
@@ -26,7 +36,7 @@ const detailState=reactive({
   remark:route.params.userName,
   userName:'',
   hometown:'',
-  gender:'',
+  gender:undefined,
   phone:''
 })
 onMounted(()=>{
@@ -42,6 +52,7 @@ onMounted(()=>{
     detailState.hometown=res.data.hometown
     detailState.userName=res.data.name
     detailState.gender=res.data.gender
+    console.log(detailState.gender)
   })
 })
 
